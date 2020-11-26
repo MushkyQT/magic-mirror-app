@@ -63,6 +63,13 @@ class HabitatController extends AbstractController
         $form = $this->createForm(AddHabitatFormType::class, $habitat);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($form);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($habitat);
+            $entityManager->flush();
+        }
+
         return $this->render('habitat/new_habitat.html.twig', [
             'controller_name' => 'HabitatController',
             'addHabitatForm' => $form->createView(),
