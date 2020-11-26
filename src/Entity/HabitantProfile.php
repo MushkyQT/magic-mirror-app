@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use App\Repository\HabitantProfileRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=HabitantProfileRepository::class)
  */
 class HabitantProfile
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
