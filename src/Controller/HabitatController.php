@@ -13,8 +13,12 @@ class HabitatController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('habitat/index.html.twig', [
-            'controller_name' => 'HabitatController',
-        ]);
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        } else {
+            return $this->render('habitat/index.html.twig', [
+                'controller_name' => 'HabitatController',
+            ]);
+        }
     }
 }

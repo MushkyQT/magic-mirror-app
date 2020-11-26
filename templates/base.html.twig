@@ -15,10 +15,11 @@
     <div class="container justify-content-between">
         <a class="navbar-brand" href=".">Portail fabMirror</a>
         {% if app.user %}
-            <p>Logged in as {{ app.user.firstName }}  {{ app.user.lastName }}</p>
+            <p>Logged in as {{ app.user.firstName }}  {{ app.user.lastName }}, <a
+                        href="{{ path('app_logout') }}">Logout</a></p>
         {% endif %}
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+        <ol class="breadcrumb fabPurple">
+            <li class="breadcrumb-item"><a href="{{ path('home') }}" class="fabOrangeText">Home</a></li>
             {% block breadcrumbs %}{% endblock %}
         </ol>
     </div>
