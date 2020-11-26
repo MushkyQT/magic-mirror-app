@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List habitats!{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ path('app_list_habitats') }}" class="fabOrangeText">Habitats</a></li>
+    <li class="breadcrumb-item active">New</li>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">Add a new Habitat, {{ app.user.firstName }}</h1>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                {{ form_start(addHabitatForm) }}
+                {{ form_end(addHabitatForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
