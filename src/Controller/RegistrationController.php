@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
             // If User is of userType 'habitant', create new HabitantProfile
             if ($form->get('userType')->getData() == 'habitant') {
                 $habitant = new HabitantProfile();
-                $habitant->setHabitantId($user)
+                $habitant->setHabitant($user)
                     ->setRecognitionCode('none yet')
                     ->setData(['nothing' => 'here', 'seriously' => 'nothing']);
                 $entityManager->persist($habitant);

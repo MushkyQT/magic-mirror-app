@@ -24,7 +24,7 @@ class HabitantProfile
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $habitantId;
+    private $habitant;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -41,14 +41,14 @@ class HabitantProfile
         return $this->id;
     }
 
-    public function getHabitantId(): ?User
+    public function getHabitant(): ?User
     {
-        return $this->habitantId;
+        return $this->habitant;
     }
 
-    public function setHabitantId(User $habitantId): self
+    public function setHabitant(User $habitant): self
     {
-        $this->habitantId = $habitantId;
+        $this->habitant = $habitant;
 
         return $this;
     }
