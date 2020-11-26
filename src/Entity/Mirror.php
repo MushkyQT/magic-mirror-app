@@ -18,7 +18,7 @@ class Mirror
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $identifierCode;
 
@@ -28,7 +28,7 @@ class Mirror
     private $isIdentified;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      */
     private $ipAddress;
 

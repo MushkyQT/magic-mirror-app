@@ -38,7 +38,7 @@ class Habitat
     private $displayName;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="bigint", unique=true)
      */
     private $macAddress;
 
