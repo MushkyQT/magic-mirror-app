@@ -40,17 +40,18 @@ class HabitatController extends AbstractController
      */
     public function listHabitats(): Response
     {
-        // TODO: If user has no habitats, redirect to app_new_habitat with a flash
-        $this->addFlash('error', 'No habitats! Please add your first habitat.');
-        return $this->redirectToRoute('app_new_habitat');
-
-
-        // TODO: If user has habitats, list them
-        // Do me
-
-        return $this->render('habitat/list_habitats.html.twig', [
-            'controller_name' => 'HabitatController',
-        ]);
+        // If user has habitat(s), pass them to list_habitats
+        // Else, redirect to add new habitat page with a flash message
+        $user = $this->getUser();
+        if ($user->getHabitats()[0]) {
+            $habitats = $user->getHabitats();
+            return $this->render('habitat/list_habitats.html.twig', [
+                'habitats' => $habitats,
+            ]);
+        } else {
+            $this->addFlash('error', 'No habitats! Please add your first habitat.');
+            return $this->redirectToRoute('app_new_habitat');
+        }
     }
 
     /**
@@ -59,15 +60,22 @@ class HabitatController extends AbstractController
      */
     public function newHabitat(Request $request): Response
     {
+        // Prepare new Habitat and create/handle Add Habitat form
         $habitat = new Habitat();
         $form = $this->createForm(AddHabitatFormType::class, $habitat);
         $form->handleRequest($request);
 
+        /* If form was submitted and is valid, persist new habitat and
+        create user_habitat relationship and redirect to habitats list */
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form);
+            $user = $this->getUser();
+            $habitat->addUser($user);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($habitat);
             $entityManager->flush();
+
+            return $this->redirectToRoute('app_list_habitats');
         }
 
         return $this->render('habitat/new_habitat.html.twig', [
