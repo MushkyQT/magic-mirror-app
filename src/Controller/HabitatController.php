@@ -20,7 +20,7 @@ class HabitatController extends AbstractController
         }
 
         if ($userType === 'aidant') {
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_list_habitats');
         } elseif ($userType === 'habitant') {
             return $this->redirectToRoute('app_login');
         } else {
