@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HabitatController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6 fabOrange text-center">
+                <h1>Welcome!</h1>
+                <div class="py-3">
+                    <a href="{{ path('app_login') }}" class="btn btn-success">Sign In</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-info">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
