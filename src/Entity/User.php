@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -70,6 +72,16 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $isVerified = false;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Habitat::class, inversedBy="users")
+     */
+    private $habitats;
+
+    public function __construct()
+    {
+        $this->habitats = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -217,6 +229,30 @@ class User implements UserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Habitat[]
+     */
+    public function getHabitats(): Collection
+    {
+        return $this->habitats;
+    }
+
+    public function addHabitat(Habitat $habitat): self
+    {
+        if (!$this->habitats->contains($habitat)) {
+            $this->habitats[] = $habitat;
+        }
+
+        return $this;
+    }
+
+    public function removeHabitat(Habitat $habitat): self
+    {
+        $this->habitats->removeElement($habitat);
 
         return $this;
     }

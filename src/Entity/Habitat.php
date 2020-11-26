@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\HabitatRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -39,6 +41,16 @@ class Habitat
      * @ORM\Column(type="bigint")
      */
     private $macAddress;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="habitats")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +101,33 @@ class Habitat
     public function setMacAddress(string $macAddress): self
     {
         $this->macAddress = $macAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addHabitat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeHabitat($this);
+        }
 
         return $this;
     }
