@@ -29,4 +29,15 @@ class HabitatController extends AbstractController
             ]);
         }
     }
+
+    /**
+     * @Route("/habitats", name="app_list_habitats")
+     */
+    public function listHabitats(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        return $this->render('habitat/list_habitats.html.twig', [
+            'controller_name' => 'HabitatController',
+        ]);
+    }
 }
