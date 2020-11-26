@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\HabitantProfile;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
@@ -28,15 +29,18 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        // Redirect user if they are already logged in
         if ($this->getUser()) {
             $this->addFlash('error', 'Vous etes deja connectes a un compte!');
             return $this->redirectToRoute('home');
         }
 
+        // Prepare new User object and create RegistrationForm form
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        // If form is submitted and valid, define User properties
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
@@ -46,8 +50,19 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            // Prepare new user for db
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
+            // If User is of userType 'habitant', create new HabitantProfile
+            if ($form->get('userType')->getData() == 'habitant') {
+                $habitant = new HabitantProfile();
+                $habitant->setHabitantId($user)
+                    ->setRecognitionCode('none yet')
+                    ->setData(['nothing' => 'here', 'seriously' => 'nothing']);
+                $entityManager->persist($habitant);
+            }
+
+            // Commit new User and optionally HabitantProfile to DB
             $entityManager->flush();
 
             // generate a signed url and email it to the user
@@ -58,7 +73,6 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_login');
         }
