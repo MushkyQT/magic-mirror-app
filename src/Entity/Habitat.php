@@ -47,9 +47,15 @@ class Habitat
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Mirror::class, mappedBy="habitat", orphanRemoval=true)
+     */
+    private $mirrors;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->mirrors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +133,36 @@ class Habitat
     {
         if ($this->users->removeElement($user)) {
             $user->removeHabitat($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Mirror[]
+     */
+    public function getMirrors(): Collection
+    {
+        return $this->mirrors;
+    }
+
+    public function addMirror(Mirror $mirror): self
+    {
+        if (!$this->mirrors->contains($mirror)) {
+            $this->mirrors[] = $mirror;
+            $mirror->setHabitat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMirror(Mirror $mirror): self
+    {
+        if ($this->mirrors->removeElement($mirror)) {
+            // set the owning side to null (unless already changed)
+            if ($mirror->getHabitat() === $this) {
+                $mirror->setHabitat(null);
+            }
         }
 
         return $this;
