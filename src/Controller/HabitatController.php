@@ -13,7 +13,15 @@ class HabitatController extends AbstractController
      */
     public function index(): Response
     {
+        // Detect logged in user's userType or if no user logged in, default to none
+        $userType = 'none';
         if ($this->getUser()) {
+            $userType = $this->getUser()->getUserType();
+        }
+
+        if ($userType === 'aidant') {
+            return $this->redirectToRoute('app_login');
+        } elseif ($userType === 'habitant') {
             return $this->redirectToRoute('app_login');
         } else {
             return $this->render('habitat/index.html.twig', [
