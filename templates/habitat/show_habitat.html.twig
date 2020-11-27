@@ -10,9 +10,21 @@
 
 {% block body %}
     <div class="container">
-        <h1 class="text-center">View a habitat, {{ app.user.firstName }}</h1>
+        <h1 class="text-center">Viewing {{ habitat.displayName }} as {{ app.user.firstName }}</h1>
         <div class="row justify-content-center">
-            <h2>{{ habitat.displayName }}</h2>
+            <div class="card text-center">
+                <div class="card-header">
+                    MAC: {{ habitat.macAddress }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+                <div class="card-footer text-muted">
+
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
