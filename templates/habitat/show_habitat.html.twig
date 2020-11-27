@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}View habitat!{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ path('app_list_habitats') }}" class="fabOrangeText">Habitats</a></li>
+    <li class="breadcrumb-item active">{{ habitat.displayName }}</li>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">View a habitat, {{ app.user.firstName }}</h1>
+        <div class="row justify-content-center">
+            <h2>{{ habitat.displayName }}</h2>
+        </div>
+    </div>
+{% endblock %}

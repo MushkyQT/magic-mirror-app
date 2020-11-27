@@ -83,4 +83,24 @@ class HabitatController extends AbstractController
             'addHabitatForm' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/habitats/{id}", name="app_view_habitat")
+     * @IsGranted("ROLE_USER")
+     */
+    public function showHabitat(Habitat $habitat): Response
+    {
+        // Check if user has relationship with requested habitat
+        // If no, redirect away with flash message.
+        $user = $this->getUser();
+        if (!$habitat->getUsers()->contains($user)) {
+            $this->addFlash('error', 'You do not have access to this habitat!');
+            return $this->redirectToRoute('app_list_habitats');
+        }
+
+        // If yes, render page.
+        return $this->render('habitat/show_habitat.html.twig', [
+            'habitat' => $habitat,
+        ]);
+    }
 }
